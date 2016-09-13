@@ -12,7 +12,7 @@ app.get('/data.json', function(req, res) {
     res.json(data)
   })
   .catch(err => {
-    res.status(500).send({ error: err });
+    res.status(500).send(err.message);
   });
 });
 

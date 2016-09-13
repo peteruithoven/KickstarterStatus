@@ -5,17 +5,32 @@ import loadData from './data.js';
 const kicktraqProjectURL = 'http://www.kicktraq.com/projects/kmi/boppad-smart-fabric-drum-pad-from-keith-mcmillen';
 
 export default class App extends Component {
-  state = {}
+  state = {
+    refreshed: false,
+    errorText: ''
+  }
   refreshData = () => {
+    this.setState({
+      errorText: ''
+    });
     loadData()
     .then(data => {
       this.setState({
-        projectData: data
+        projectData: data,
+        refreshed: true
       });
-      this.timeout = setTimeout(this.refreshData, 1000*5)
+      setTimeout(() => {
+        this.setState({
+          refreshed: false
+        });
+      }, 1000*1);
+      this.timeout = setTimeout(this.refreshData, 1000*5);
     })
     .catch(err => {
       console.log(`Couldn't refresh data: `, err);
+      this.setState({
+        errorText: err.message
+      });
       this.timeout = setTimeout(this.refreshData, 1000*5)
     });
   }
@@ -26,7 +41,7 @@ export default class App extends Component {
     clearTimeout(this.timeout);
   }
   render () {
-    const { projectData } = this.state;
+    const { projectData, refreshed, errorText } = this.state;
     const day = new Date().getDate();
     return (
       <div>
@@ -37,6 +52,10 @@ export default class App extends Component {
           <img src={`${kicktraqProjectURL}/dailybackers.png?day=${day}`} />
           <img src={`${kicktraqProjectURL}/dailycomments.png?day=${day}`} />
           <img src={`${kicktraqProjectURL}/exp-cone.png?day=${day}`} />
+        </div>
+        <div className="message">
+          {refreshed? `Refreshed` : ``}
+          {errorText? `Error: ${errorText}` : ``}
         </div>
       </div>
     );
