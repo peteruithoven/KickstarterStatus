@@ -9,6 +9,7 @@ const kicktraqProjectURL = 'http://www.kicktraq.com/projects/1238747394/the-vamp
 const REFRESH_DATA_TIMEOUT = 5000;
 const CELEBRATE_BACKER_TIMEOUT = 400;
 const NEW_BACKER_AUDIO = '/audio/newbacker.wav';
+const NOTIFICATION_AUTO_DISMISS = 60;
 
 var notificationStyle = {
   NotificationItem: {
@@ -78,7 +79,7 @@ export default class App extends Component {
     this.addNotification({
       title: `New backer!`,
       message: `#${backer}`,
-      autoDismiss: 60,
+      autoDismiss: NOTIFICATION_AUTO_DISMISS,
       dismissible: false
     });
     const newBackerAudio = new Audio(NEW_BACKER_AUDIO);
