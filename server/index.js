@@ -9,7 +9,7 @@ app.get('/data.json', function(req, res) {
   fetch(url)
   .then(response => response.json())
   .then(data => {
-    res.json(data)
+    res.json(data);
   })
   .catch(err => {
     res.status(500).send(err.message);
