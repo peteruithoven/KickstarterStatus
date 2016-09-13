@@ -12,7 +12,7 @@
     "dist:html": "html-dist index.html --minify  --remove-all --insert app.js -o dist/index.html",
     "dist:style": "mkdir -p dir/style && postcss --use postcss-import style/main.css -d dist/style/ && postcss --use autoprefixer dist/style/main.css -d dist/style/",
     "dist": "npm run dist:clear && npm run dist:sfx && npm run dist:html && npm run dist:style",
-    "upload": "scp -r * pi:kickstarter-status",
+    "upload": "scp -r dist server package.json pi:KickstarterStatus",
     "deploy": "npm run dist && npm run upload"
   },
   "keywords": [],
