@@ -14,7 +14,7 @@ moment.relativeTimeThreshold('M', 12);
 moment.relativeTimeRounding(Math.floor);
 
 export default function({ projectData }) {
-  console.log('projectData: ', projectData);
+  // console.log('projectData: ', projectData);
   const {
     deadline,
     currency,
