@@ -1,6 +1,7 @@
 var fetch = require('node-fetch');
 var express = require('express');
 
+// const searchTerm = process.env.SEARCH_TERM || 'boppad';
 const searchTerm = process.env.SEARCH_TERM || 'The+Vamp+Stereo';
 const url = 'https://www.kickstarter.com/projects/search.json?term='+searchTerm;
 const app = express();
