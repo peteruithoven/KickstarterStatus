@@ -2,7 +2,7 @@ import React, { PropTypes, Component} from 'react';
 import ProjectInfo from './ProjectInfo.js';
 import loadData from './data.js';
 
-const kicktraqProjectURL = 'http://www.kicktraq.com/projects/kmi/boppad-smart-fabric-drum-pad-from-keith-mcmillen';
+const kicktraqProjectURL = 'http://www.kicktraq.com/projects/1238747394/the-vamp-stereo-speaker-bring-back-the-sound';
 
 export default class App extends Component {
   state = {
