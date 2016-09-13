@@ -61,7 +61,7 @@ export default class App extends Component {
     const prevBackersCount = this.state.projectData.backers_count;
     const newBackersCount = data.backers_count;
     for (var count = prevBackersCount; count < newBackersCount; count++) {
-      this.newBackers.push(count);
+      this.newBackers.push(count+1);
     }
     console.log('celebrateNewBackers: ', this.newBackers);
     if (!this.celebratingBackers) {
