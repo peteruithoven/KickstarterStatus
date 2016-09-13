@@ -10,6 +10,24 @@ const REFRESH_DATA_TIMEOUT = 5000;
 const CELEBRATE_BACKER_TIMEOUT = 400;
 const NEW_BACKER_AUDIO = '/audio/newbacker.wav';
 
+var notificationStyle = {
+  NotificationItem: {
+    DefaultStyle: { // Applied to every notification, regardless of the notification level
+      borderTop: '',
+      boxShadow: '0px 0px 7px 0px rgba(0,0,0,0.5)',
+      color: '#020621'
+    },
+    success: { // Applied only to the success notification item
+      backgroundColor: '#0BD318',
+    }
+  },
+  Title: {
+    DefaultStyle: {
+      color: '#020621'
+    }
+  }
+}
+
 export default class App extends Component {
   state = {
     refreshed: false,
@@ -60,7 +78,8 @@ export default class App extends Component {
     this.addNotification({
       title: `New backer!`,
       message: `#${backer}`,
-      autoDismiss: 60
+      autoDismiss: 60,
+      dismissible: false
     });
     const newBackerAudio = new Audio(NEW_BACKER_AUDIO);
     newBackerAudio.play();
@@ -127,7 +146,7 @@ export default class App extends Component {
           {refreshed? `Refreshed` : ``}
           {errorText? `Error: ${errorText}` : ``}
         </div>
-        <NotificationSystem ref="notificationSystem" />
+        <NotificationSystem ref="notificationSystem" style={notificationStyle}/>
       </div>
     );
   }
