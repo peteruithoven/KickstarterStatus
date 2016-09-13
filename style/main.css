@@ -1,0 +1,41 @@
+@import '../style/normalize.css';
+
+body, html {
+  font-family: "Helvetica Neue", Helvetica, Arial, "Liberation Sans", FreeSans, sans-serif;
+  color: #020621;
+}
+body {
+  padding: 10px;
+}
+.project-info {
+  font-weight: 700;
+  font-size: 60px;
+}
+.text {
+  color: #6B7180;
+}
+
+.graphs {
+  margin: 10px 0 0 0;
+}
+.graphs img {
+  float: left;
+  width: 49.5%;
+  margin: 0 5px 5px 0;
+}
+
+@media (max-width: 870px) {
+  .project-info {
+    font-size: 40px;
+  }
+}
+@media (min-width: 1400px) {
+  .project-info {
+    font-size: 80px;
+  }
+}
+@media (max-width: 1100px) {
+	.graphs img {
+    width: 100%;
+  }
+}
