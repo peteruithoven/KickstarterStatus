@@ -21,8 +21,9 @@ export default function({ projectData }) {
   const completed = pledged/goal;
   const deadlineMoment = moment(deadline*1000);
   const nowMoment = moment();
-  const diff = deadlineMoment.diff(nowMoment);
-  const leftText = moment.duration(diff).humanize();
+  const duration = moment.duration(deadlineMoment.diff(nowMoment));
+  const daysLeft = Math.floor(duration.asDays());
+  const leftText = (daysLeft > 5)? `${daysLeft} days` : duration.humanize();
   return (
     <div className="project-info">
       <ProgressBar completed={completed}/>
