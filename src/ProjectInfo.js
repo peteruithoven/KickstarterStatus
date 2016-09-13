@@ -3,6 +3,16 @@ import ProgressBar from './ProgressBar.js';
 import moment from 'moment';
 import { format } from 'currency-formatter';
 
+// make moment more precize
+moment.relativeTimeThreshold('s', 60);
+moment.relativeTimeThreshold('m', 60);
+moment.relativeTimeThreshold('h', 24);
+moment.relativeTimeThreshold('d', 31);
+moment.relativeTimeThreshold('M', 12);
+
+// Round relative time evaluation down
+moment.relativeTimeRounding(Math.floor);
+
 export default function({ projectData }) {
   console.log('projectData: ', projectData);
   const {
@@ -22,8 +32,7 @@ export default function({ projectData }) {
   const deadlineMoment = moment(deadline*1000);
   const nowMoment = moment();
   const duration = moment.duration(deadlineMoment.diff(nowMoment));
-  const daysLeft = Math.floor(duration.asDays());
-  const leftText = (daysLeft > 5)? `${daysLeft} days` : duration.humanize();
+  const leftText = duration.humanize();
   return (
     <div className="project-info">
       <ProgressBar completed={completed}/>
