@@ -80,7 +80,8 @@ export default class App extends Component {
       title: `New backer!`,
       message: `#${backer}`,
       autoDismiss: NOTIFICATION_AUTO_DISMISS,
-      dismissible: false
+      dismissible: false,
+      position: 'br'
     });
     const newBackerAudio = new Audio(NEW_BACKER_AUDIO);
     newBackerAudio.play();
