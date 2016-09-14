@@ -1,11 +1,11 @@
 import React, { PropTypes, Component} from 'react';
 import ProjectInfo from './ProjectInfo.js';
+import Charts from './Charts.js';
 import loadData from './data.js';
 import NotificationSystem from 'react-notification-system';
 
-// const kicktraqProjectURL = 'http://www.kicktraq.com/projects/kmi/boppad-smart-fabric-drum-pad-from-keith-mcmillen';
-const kicktraqProjectURL = 'http://www.kicktraq.com/projects/1238747394/the-vamp-stereo-speaker-bring-back-the-sound';
-
+// const KICKTRAC_PROJECT = 'kmi/boppad-smart-fabric-drum-pad-from-keith-mcmillen';
+const KICKTRAC_PROJECT = '1238747394/the-vamp-stereo-speaker-bring-back-the-sound';
 const REFRESH_DATA_TIMEOUT = 5000;
 const CELEBRATE_BACKER_TIMEOUT = 400;
 const NEW_BACKER_AUDIO = '/audio/newbacker.wav';
@@ -132,17 +132,13 @@ export default class App extends Component {
   }
   render () {
     const { projectData, refreshed, errorText } = this.state;
-    const day = new Date().getDate();
+    // To refresh graph images every hour we generate a different
+    // url every hour, causing them to reload every hour
+    const hour = new Date().getHours();
     return (
       <div>
         {projectData ? <ProjectInfo projectData={projectData}/> : null}
-        <div className="graphs">
-          <img src={`${kicktraqProjectURL}/dailychart.png?day=${day}`} />
-          <img src={`${kicktraqProjectURL}/dailypledges.png?day=${day}`} />
-          <img src={`${kicktraqProjectURL}/dailybackers.png?day=${day}`} />
-          <img src={`${kicktraqProjectURL}/dailycomments.png?day=${day}`} />
-          <img src={`${kicktraqProjectURL}/exp-cone.png?day=${day}`} />
-        </div>
+        <Charts project={KICKTRAC_PROJECT} updateSeed={hour} />
         <div className="message">
           {refreshed? `Refreshed` : ``}
           {errorText? `Error: ${errorText}` : ``}
