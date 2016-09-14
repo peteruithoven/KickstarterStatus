@@ -1,6 +1,6 @@
 import React from 'react';
 
-const baseURL = 'http://www.kicktraq.com/projects';
+const baseURL = 'https://www.kicktraq.com/projects';
 
 const charts = [
   'dailychart',
