@@ -34,7 +34,7 @@ export default class App extends Component {
     refreshed: false,
     errorText: ''
   }
-  _notificationSystem = null;
+  notificationSystem = null;
   mounted = false;
   newBackers = [];
   celebratingBackers = false;
@@ -76,7 +76,8 @@ export default class App extends Component {
       return;
     };
     console.log('celebrate backer: ', backer);
-    this.addNotification({
+    this.notificationSystem.addNotification({
+      level: 'success',
       title: `New backer!`,
       message: `#${backer}`,
       autoDismiss: NOTIFICATION_AUTO_DISMISS,
@@ -113,18 +114,10 @@ export default class App extends Component {
       this.timeout = setTimeout(this.refreshData, REFRESH_DATA_TIMEOUT)
     });
   }
-
-  addNotification = (data) => {
-    this._notificationSystem.addNotification({
-      level: 'success',
-      ...data
-    });
-  }
   componentDidMount() {
     this.mounted = true;
     this.refreshData();
-    this._notificationSystem = this.refs.notificationSystem;
-    window.addNotification = this.addNotification;
+    this.notificationSystem = this.refs.notificationSystem;
   }
   componentWillUnmount() {
     this.mounted = false;
