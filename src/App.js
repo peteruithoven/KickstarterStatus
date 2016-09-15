@@ -75,8 +75,12 @@ export default class App extends Component {
     this.loadStatsCancelablePromise = loadStats(this.state.project);
     this.loadStatsCancelablePromise.promise
     .then(data => {
-      this.setStats(data.project);
-      this.refreshedMessage.show();
+      if (data.error) {
+        this.showError('Couldn\'t refresh stats', data.error, 5);
+      } else {
+        this.setStats(data.project);
+        this.refreshedMessage.show();
+      }
       this.refreshTimeout = setTimeout(this.refreshStats, REFRESH_STATS_TIMEOUT);
     })
     .catch(err => {
