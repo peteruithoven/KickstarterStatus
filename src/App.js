@@ -1,10 +1,10 @@
 import React, { PropTypes, Component} from 'react';
 import ProjectInfo from './ProjectInfo.js';
 import Charts from './Charts.js';
-import loadData from './data.js';
+import { loadData, loadStats } from './data.js';
 import NotificationSystem from 'react-notification-system';
 
-const REFRESH_DATA_TIMEOUT = 5000;
+const REFRESH_STATS_TIMEOUT = 5000;
 const CELEBRATE_BACKER_TIMEOUT = 400;
 const NEW_BACKER_AUDIO = '/audio/newbacker.wav';
 const NOTIFICATION_AUTO_DISMISS = 60;
@@ -48,10 +48,14 @@ export default class App extends Component {
     }, 1000*1);
   }
 
-  setProjectData = (data) => {
+  setStats = (data) => {
     this.celebrateNewBackers(data);
     this.setState({
-      projectData: data
+      projectData: {
+        ...this.state.projectData,
+        backers_count: data.backers_count,
+        pledged: parseFloat(data.pledged)
+      }
     });
   }
   celebrateNewBackers = (data) => {
@@ -61,7 +65,6 @@ export default class App extends Component {
     for (var count = prevBackersCount; count < newBackersCount; count++) {
       this.newBackers.push(count+1);
     }
-    console.log('celebrateNewBackers: ', this.newBackers);
     if (!this.celebratingBackers) {
       this.celebratingBackers = true;
       this.celebrateNewBacker();
@@ -73,7 +76,6 @@ export default class App extends Component {
       this.celebratingBackers = false;
       return;
     };
-    console.log('celebrate backer: ', backer);
     this.notificationSystem.addNotification({
       level: 'success',
       title: `New backer!`,
@@ -92,29 +94,49 @@ export default class App extends Component {
     }
   }
 
-  refreshData = () => {
+  loadProjectData = () => {
     this.setState({
       errorText: ''
     });
     loadData(location.pathname)
     .then(data => {
       if (!this.mounted) return;
-      this.setProjectData(data);
-      this.setRefreshed();
-      this.timeout = setTimeout(this.refreshData, REFRESH_DATA_TIMEOUT);
+      this.setState({
+        projectData: data
+      });
     })
     .catch(err => {
-      console.log(`Couldn't refresh data: `, err);
+      console.log(`Couldn't load project data: `, err);
       if (!this.mounted) return;
       this.setState({
         errorText: err.message
       });
-      this.timeout = setTimeout(this.refreshData, REFRESH_DATA_TIMEOUT)
+    });
+  }
+  refreshStats = () => {
+    this.setState({
+      errorText: ''
+    });
+    loadStats(location.pathname)
+    .then(data => {
+      if (!this.mounted) return;
+      this.setStats(data.project);
+      this.setRefreshed();
+      this.timeout = setTimeout(this.refreshStats, REFRESH_STATS_TIMEOUT);
+    })
+    .catch(err => {
+      console.log(`Couldn't refresh stats: `, err);
+      if (!this.mounted) return;
+      this.setState({
+        errorText: err.message
+      });
+      this.timeout = setTimeout(this.refreshStats, REFRESH_STATS_TIMEOUT)
     });
   }
   componentDidMount() {
     this.mounted = true;
-    this.refreshData();
+    this.loadProjectData();
+    this.refreshStats();
     this.notificationSystem = this.refs.notificationSystem;
   }
   componentWillUnmount() {
