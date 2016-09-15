@@ -1,8 +1,8 @@
-import React, { PropTypes, Component} from 'react';
+import React, { Component } from 'react';
+import NotificationSystem from 'react-notification-system';
 import ProjectInfo from './ProjectInfo.js';
 import Charts from './Charts.js';
 import { loadData, loadStats } from './data.js';
-import NotificationSystem from 'react-notification-system';
 
 const REFRESH_STATS_TIMEOUT = 5000;
 const CELEBRATE_BACKER_TIMEOUT = 400;
@@ -10,7 +10,7 @@ const NEW_BACKER_AUDIO = '/audio/newbacker.wav';
 const NOTIFICATION_AUTO_DISMISS = 60;
 const ERROR_NOTIFICATION_AUTO_DISMISS = 5000;
 
-var notificationStyle = {
+const notificationStyle = {
   NotificationItem: {
     DefaultStyle: { // Applied to every notification, regardless of the notification level
       borderTop: '',
@@ -18,7 +18,7 @@ var notificationStyle = {
       color: '#020621'
     },
     success: { // Applied only to the success notification item
-      backgroundColor: '#0BD318',
+      backgroundColor: '#0BD318'
     }
   },
   Title: {
@@ -26,7 +26,7 @@ var notificationStyle = {
       color: '#020621'
     }
   }
-}
+};
 
 export default class App extends Component {
   state = {
@@ -57,7 +57,7 @@ export default class App extends Component {
         projectData: data
       });
     })
-    .catch(err => this.showError(`Couldn't load project data`, err));
+    .catch(err => this.showError('Couldn\'t load project data', err));
   }
 
   refreshStats = () => {
@@ -69,8 +69,8 @@ export default class App extends Component {
       this.refreshTimeout = setTimeout(this.refreshStats, REFRESH_STATS_TIMEOUT);
     })
     .catch(err => {
-      this.showError(`Couldn't refresh stats`, err)
-      this.refreshTimeout = setTimeout(this.refreshStats, REFRESH_STATS_TIMEOUT)
+      this.showError('Couldn\'t refresh stats', err);
+      this.refreshTimeout = setTimeout(this.refreshStats, REFRESH_STATS_TIMEOUT);
     });
   }
 
@@ -88,8 +88,8 @@ export default class App extends Component {
     if (!this.state.projectData) return;
     const prevBackersCount = this.state.projectData.backers_count;
     const newBackersCount = data.backers_count;
-    for (var count = prevBackersCount; count < newBackersCount; count++) {
-      this.newBackers.push(count+1);
+    for (let count = prevBackersCount; count < newBackersCount; count++) {
+      this.newBackers.push(count + 1);
     }
     if (!this.celebratingBackers) {
       this.celebratingBackers = true;
@@ -101,10 +101,10 @@ export default class App extends Component {
     if (!backer) {
       this.celebratingBackers = false;
       return;
-    };
+    }
     this.notificationSystem.addNotification({
       level: 'success',
-      title: `New backer!`,
+      title: 'New backer!',
       message: `#${backer}`,
       autoDismiss: NOTIFICATION_AUTO_DISMISS,
       dismissible: false,
@@ -129,7 +129,7 @@ export default class App extends Component {
       this.setState({
         refreshed: false
       });
-    }, 1000*1);
+    }, 1000 * 1);
   }
 
   showError = (title, err) => {
@@ -143,17 +143,17 @@ export default class App extends Component {
     });
   }
 
-  render () {
+  render() {
     const { projectData, refreshed } = this.state;
     // To refresh graph images every hour we generate a different
     // url every hour, causing them to reload every hour
     const hour = new Date().getHours();
     return (
       <div>
-        {projectData ? <ProjectInfo projectData={projectData}/> : null}
+        {projectData ? <ProjectInfo projectData={projectData} /> : null}
         <Charts project={location.pathname} updateSeed={hour} />
-        <div className="message">{refreshed? `Refreshed` : ``}</div>
-        <NotificationSystem ref="notificationSystem" style={notificationStyle}/>
+        <div className="message">{refreshed ? 'Refreshed' : ''}</div>
+        <NotificationSystem ref="notificationSystem" style={notificationStyle} />
       </div>
     );
   }

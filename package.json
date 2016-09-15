@@ -21,7 +21,13 @@
   "license": "ISC",
   "devDependencies": {
     "autoprefixer": "^6.4.1",
+    "babel-eslint": "^6.1.2",
     "chokidar-socket-emitter": "^0.5.4",
+    "eslint": "^3.5.0",
+    "eslint-config-airbnb": "^11.1.0",
+    "eslint-plugin-import": "^1.15.0",
+    "eslint-plugin-jsx-a11y": "^2.2.2",
+    "eslint-plugin-react": "^6.2.2",
     "html-dist": "^0.1.0",
     "jspm": "^0.17.0-beta.28",
     "ncp": "^2.0.0",

@@ -3,7 +3,7 @@ import cancellable from './cancellable.js';
 
 export function loadData(project) {
   // remove leading / trailing /'s'
-  project = project.replace(/^\/|\/$/g,'');
+  project = project.replace(/^\/|\/$/g, '');
   return cancellable(fetch(`/data/${project}.json`)
   .then(response => {
     if (!response.ok) { // error response
@@ -12,14 +12,14 @@ export function loadData(project) {
         throw Error(text);
       });
     } else {
-      return response.json()
+      return response.json();
     }
   }));
 }
 
 export function loadStats(project) {
   // remove leading / trailing /'s'
-  project = project.replace(/^\/|\/$/g,'');
+  project = project.replace(/^\/|\/$/g, '');
   return cancellable(fetch(`/stats/${project}.json`)
   .then(response => {
     if (!response.ok) { // error response
@@ -28,7 +28,7 @@ export function loadStats(project) {
         throw Error(text);
       });
     } else {
-      return response.json()
+      return response.json();
     }
   }));
 }

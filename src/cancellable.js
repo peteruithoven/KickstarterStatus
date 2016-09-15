@@ -1,20 +1,20 @@
 const cancellable = (promise) => {
-  let hasCanceled_ = false;
+  let hasCanceled = false;
 
   const wrappedPromise = new Promise((resolve, reject) => {
-    promise.then((val) =>
-      hasCanceled_ ? null : resolve(val)
-    );
-    promise.catch((error) =>
-      hasCanceled_ ? null : reject(error)
-    );
+    promise.then((val) => {
+      if (hasCanceled) resolve(val);
+    });
+    promise.catch((error) => {
+      if (hasCanceled) reject(error);
+    });
   });
 
   return {
     promise: wrappedPromise,
     cancel() {
-      hasCanceled_ = true;
-    },
+      hasCanceled = true;
+    }
   };
 };
 export default cancellable;

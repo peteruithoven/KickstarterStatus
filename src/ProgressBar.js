@@ -1,5 +1,6 @@
-import React from 'react';
-export default function({
+import React, { PropTypes } from 'react';
+
+export default function ProgressBar({
   completed = 1,
   height = 25,
   color = '#0BD318',
@@ -9,19 +10,19 @@ export default function({
     completed = 0;
   } else if (completed > 1) {
     completed = 1;
-  };
+  }
 
   const bgStyle = {
-    borderRadius: `${height/2}px`,
-    backgroundColor: backgroundColor,
+    borderRadius: `${height / 2}px`,
+    backgroundColor,
     width: '100%'
   };
   const style = {
-    borderRadius: `${height/2}px`,
+    borderRadius: `${height / 2}px`,
     backgroundColor: color,
-    width: `${Math.round(completed*100)}%`,
-    transition: "width 200ms",
-    height: height
+    width: `${Math.round(completed * 100)}%`,
+    transition: 'width 200ms',
+    height
   };
 
   return (
@@ -36,3 +37,10 @@ export default function({
     </div>
   );
 }
+
+ProgressBar.propTypes = {
+  completed: PropTypes.number,
+  height: PropTypes.number,
+  color: PropTypes.string,
+  backgroundColor: PropTypes.string
+};
