@@ -15,12 +15,6 @@ export function loadData(project) {
     } else {
       return response.json()
     }
-  })
-  .then(searchData => {
-    if(typeof searchData === 'string') {
-      throw new Error(`Couldn't parse json`);
-    }
-    return searchData.projects[0]
   });
 }
 

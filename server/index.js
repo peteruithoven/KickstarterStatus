@@ -23,7 +23,8 @@ app.get('/data/:author/:project.:ext', function(req, res) {
   fetch(url)
   .then(response => response.json())
   .then(data => {
-    res.json(data);
+    const projectData = data.projects[0];
+    res.json(projectData);
   })
   .catch(err => {
     res.status(500).send(err.message);
