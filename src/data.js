@@ -1,10 +1,6 @@
 import 'whatwg-fetch';
 import cancellable from './cancellable.js';
 
-const url = '/data.json';
-
-// const cancellableFetch = cancellable(fetch);
-
 export function loadData(project) {
   // remove leading / trailing /'s'
   project = project.replace(/^\/|\/$/g,'');
