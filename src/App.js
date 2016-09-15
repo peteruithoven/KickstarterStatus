@@ -10,6 +10,7 @@ const CELEBRATE_BACKER_TIMEOUT = 400;
 const NEW_BACKER_AUDIO = '/audio/newbacker.wav';
 const NOTIFICATION_AUTO_DISMISS = 60;
 const ERROR_NOTIFICATION_AUTO_DISMISS = 5000;
+const RETRY_TIMEOUT = 5000;
 
 const notificationStyle = {
   NotificationItem: {
@@ -51,6 +52,7 @@ export default class App extends Component {
   }
   componentWillUnmount() {
     clearTimeout(this.refreshTimeout);
+    clearTimeout(this.retryTimeout);
     clearTimeout(this.celebrateNewBackerTimeout);
     if (this.loadStatsCancelablePromise) {
       this.loadStatsCancelablePromise.cancel();
@@ -68,7 +70,10 @@ export default class App extends Component {
         projectData: data
       });
     })
-    .catch(err => this.showError('Couldn\'t load project data', err.message, 5));
+    .catch(err => {
+      this.showError('Couldn\'t load project data', err.message, 5);
+      this.retryTimeout = setTimeout(this.loadProjectData, RETRY_TIMEOUT);
+    });
   }
 
   refreshStats = () => {
