@@ -1,11 +1,14 @@
 import 'whatwg-fetch';
+import cancellable from './cancellable.js';
 
 const url = '/data.json';
+
+// const cancellableFetch = cancellable(fetch);
 
 export function loadData(project) {
   // remove leading / trailing /'s'
   project = project.replace(/^\/|\/$/g,'');
-  return fetch(`/data/${project}.json`)
+  return cancellable(fetch(`/data/${project}.json`)
   .then(response => {
     if (!response.ok) { // error response
       return response.text() // parse error text
@@ -15,13 +18,13 @@ export function loadData(project) {
     } else {
       return response.json()
     }
-  });
+  }));
 }
 
 export function loadStats(project) {
   // remove leading / trailing /'s'
   project = project.replace(/^\/|\/$/g,'');
-  return fetch(`/stats/${project}.json`)
+  return cancellable(fetch(`/stats/${project}.json`)
   .then(response => {
     if (!response.ok) { // error response
       return response.text() // parse error text
@@ -31,5 +34,5 @@ export function loadStats(project) {
     } else {
       return response.json()
     }
-  });
+  }));
 }

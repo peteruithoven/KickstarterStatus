@@ -33,14 +33,13 @@ export default class App extends Component {
     errorText: ''
   }
   notificationSystem = null;
-  mounted = false;
   newBackers = [];
   celebratingBackers = false;
   setRefreshed = () => {
     this.setState({
       refreshed: true
     });
-    setTimeout(() => {
+    this.resetRefreshTimeout = setTimeout(() => {
       if (!this.mounted) return;
       this.setState({
         refreshed: false
@@ -98,16 +97,15 @@ export default class App extends Component {
     this.setState({
       errorText: ''
     });
-    loadData(location.pathname)
+    this.loadDataCancelablePromise = loadData(location.pathname);
+    this.loadDataCancelablePromise.promise
     .then(data => {
-      if (!this.mounted) return;
       this.setState({
         projectData: data
       });
     })
     .catch(err => {
       console.log(`Couldn't load project data: `, err);
-      if (!this.mounted) return;
       this.setState({
         errorText: err.message
       });
@@ -117,32 +115,32 @@ export default class App extends Component {
     this.setState({
       errorText: ''
     });
-    loadStats(location.pathname)
+    this.loadStatsCancelablePromise = loadStats(location.pathname);
+    this.loadStatsCancelablePromise.promise
     .then(data => {
-      if (!this.mounted) return;
       this.setStats(data.project);
       this.setRefreshed();
-      this.timeout = setTimeout(this.refreshStats, REFRESH_STATS_TIMEOUT);
+      this.refreshTimeout = setTimeout(this.refreshStats, REFRESH_STATS_TIMEOUT);
     })
     .catch(err => {
       console.log(`Couldn't refresh stats: `, err);
-      if (!this.mounted) return;
       this.setState({
         errorText: err.message
       });
-      this.timeout = setTimeout(this.refreshStats, REFRESH_STATS_TIMEOUT)
+      this.refreshTimeout = setTimeout(this.refreshStats, REFRESH_STATS_TIMEOUT)
     });
   }
   componentDidMount() {
-    this.mounted = true;
     this.loadProjectData();
     this.refreshStats();
     this.notificationSystem = this.refs.notificationSystem;
   }
   componentWillUnmount() {
-    this.mounted = false;
-    clearTimeout(this.timeout);
+    clearTimeout(this.refreshTimeout);
     clearTimeout(this.celebrateNewBackerTimeout);
+    clearTimeout(this.resetRefreshTimeout);
+    this.loadStatsCancelablePromise.cancel();
+    this.loadDataCancelablePromise.cancel();
   }
   render () {
     const { projectData, refreshed, errorText } = this.state;
