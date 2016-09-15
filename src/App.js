@@ -8,6 +8,7 @@ const REFRESH_STATS_TIMEOUT = 5000;
 const CELEBRATE_BACKER_TIMEOUT = 400;
 const NEW_BACKER_AUDIO = '/audio/newbacker.wav';
 const NOTIFICATION_AUTO_DISMISS = 60;
+const ERROR_NOTIFICATION_AUTO_DISMISS = 5000;
 
 var notificationStyle = {
   NotificationItem: {
@@ -29,8 +30,7 @@ var notificationStyle = {
 
 export default class App extends Component {
   state = {
-    refreshed: false,
-    errorText: ''
+    refreshed: false
   }
   notificationSystem = null;
   newBackers = [];
@@ -94,9 +94,6 @@ export default class App extends Component {
   }
 
   loadProjectData = () => {
-    this.setState({
-      errorText: ''
-    });
     this.loadDataCancelablePromise = loadData(location.pathname);
     this.loadDataCancelablePromise.promise
     .then(data => {
@@ -104,17 +101,9 @@ export default class App extends Component {
         projectData: data
       });
     })
-    .catch(err => {
-      console.log(`Couldn't load project data: `, err);
-      this.setState({
-        errorText: err.message
-      });
-    });
+    .catch(err => this.showError(`Couldn't load project data`, err));
   }
   refreshStats = () => {
-    this.setState({
-      errorText: ''
-    });
     this.loadStatsCancelablePromise = loadStats(location.pathname);
     this.loadStatsCancelablePromise.promise
     .then(data => {
@@ -123,11 +112,18 @@ export default class App extends Component {
       this.refreshTimeout = setTimeout(this.refreshStats, REFRESH_STATS_TIMEOUT);
     })
     .catch(err => {
-      console.log(`Couldn't refresh stats: `, err);
-      this.setState({
-        errorText: err.message
-      });
+      this.showError(`Couldn't refresh stats`, err)
       this.refreshTimeout = setTimeout(this.refreshStats, REFRESH_STATS_TIMEOUT)
+    });
+  }
+  showError = (title, err) => {
+    this.notificationSystem.addNotification({
+      level: 'error',
+      title,
+      message: err.message,
+      autoDismiss: ERROR_NOTIFICATION_AUTO_DISMISS,
+      dismissible: true,
+      position: 'br'
     });
   }
   componentDidMount() {
@@ -143,7 +139,7 @@ export default class App extends Component {
     this.loadDataCancelablePromise.cancel();
   }
   render () {
-    const { projectData, refreshed, errorText } = this.state;
+    const { projectData, refreshed } = this.state;
     // To refresh graph images every hour we generate a different
     // url every hour, causing them to reload every hour
     const hour = new Date().getHours();
@@ -151,10 +147,7 @@ export default class App extends Component {
       <div>
         {projectData ? <ProjectInfo projectData={projectData}/> : null}
         <Charts project={location.pathname} updateSeed={hour} />
-        <div className="message">
-          {refreshed? `Refreshed` : ``}
-          {errorText? `Error: ${errorText}` : ``}
-        </div>
+        <div className="message">{refreshed? `Refreshed` : ``}</div>
         <NotificationSystem ref="notificationSystem" style={notificationStyle}/>
       </div>
     );
