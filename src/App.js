@@ -3,6 +3,7 @@ import NotificationSystem from 'react-notification-system';
 import ProjectInfo from './ProjectInfo.js';
 import Charts from './Charts.js';
 import { loadData, loadStats } from './data.js';
+import Refreshed from './Refreshed.js';
 
 const REFRESH_STATS_TIMEOUT = 5000;
 const CELEBRATE_BACKER_TIMEOUT = 400;
@@ -29,9 +30,7 @@ const notificationStyle = {
 };
 
 export default class App extends Component {
-  state = {
-    refreshed: false
-  }
+  state = {};
   notificationSystem = null;
   newBackers = [];
   celebratingBackers = false;
@@ -44,7 +43,6 @@ export default class App extends Component {
   componentWillUnmount() {
     clearTimeout(this.refreshTimeout);
     clearTimeout(this.celebrateNewBackerTimeout);
-    clearTimeout(this.resetRefreshTimeout);
     this.loadStatsCancelablePromise.cancel();
     this.loadDataCancelablePromise.cancel();
   }
@@ -65,7 +63,7 @@ export default class App extends Component {
     this.loadStatsCancelablePromise.promise
     .then(data => {
       this.setStats(data.project);
-      this.setRefreshed();
+      this.refs.refreshed.show();
       this.refreshTimeout = setTimeout(this.refreshStats, REFRESH_STATS_TIMEOUT);
     })
     .catch(err => {
@@ -120,17 +118,6 @@ export default class App extends Component {
     }
   }
 
-  setRefreshed = () => {
-    this.setState({
-      refreshed: true
-    });
-    this.resetRefreshTimeout = setTimeout(() => {
-      this.setState({
-        refreshed: false
-      });
-    }, 1000 * 1);
-  }
-
   showError = (title, err) => {
     this.notificationSystem.addNotification({
       level: 'error',
@@ -143,7 +130,7 @@ export default class App extends Component {
   }
 
   render() {
-    const { projectData, refreshed } = this.state;
+    const { projectData } = this.state;
     // To refresh graph images every hour we generate a different
     // url every hour, causing them to reload every hour
     const hour = new Date().getHours();
@@ -151,7 +138,7 @@ export default class App extends Component {
       <div>
         {projectData ? <ProjectInfo projectData={projectData} /> : null}
         <Charts project={location.pathname} updateSeed={hour} />
-        <div className="message">{refreshed ? 'Refreshed' : ''}</div>
+        <Refreshed ref="refreshed" />
         <NotificationSystem ref="notificationSystem" style={notificationStyle} />
       </div>
     );
