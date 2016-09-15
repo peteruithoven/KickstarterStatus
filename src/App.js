@@ -30,35 +30,49 @@ const notificationStyle = {
 };
 
 export default class App extends Component {
-  state = {};
+  state = {
+    project: location.pathname
+  };
   notificationSystem = null;
   newBackers = [];
   celebratingBackers = false;
 
   componentDidMount() {
-    this.loadProjectData();
-    this.refreshStats();
+    if (this.state.project === '/') {
+      this.showError(
+        'Please specify project in url',
+        'Use part after https://kickstarter.com/projects/',
+        0
+      );
+    } else {
+      this.loadProjectData();
+      this.refreshStats();
+    }
   }
   componentWillUnmount() {
     clearTimeout(this.refreshTimeout);
     clearTimeout(this.celebrateNewBackerTimeout);
-    this.loadStatsCancelablePromise.cancel();
-    this.loadDataCancelablePromise.cancel();
+    if (this.loadStatsCancelablePromise) {
+      this.loadStatsCancelablePromise.cancel();
+    }
+    if (this.loadDataCancelablePromise) {
+      this.loadDataCancelablePromise.cancel();
+    }
   }
 
   loadProjectData = () => {
-    this.loadDataCancelablePromise = loadData(location.pathname);
+    this.loadDataCancelablePromise = loadData(this.state.project);
     this.loadDataCancelablePromise.promise
     .then(data => {
       this.setState({
         projectData: data
       });
     })
-    .catch(err => this.showError('Couldn\'t load project data', err));
+    .catch(err => this.showError('Couldn\'t load project data', err.message, 5));
   }
 
   refreshStats = () => {
-    this.loadStatsCancelablePromise = loadStats(location.pathname);
+    this.loadStatsCancelablePromise = loadStats(this.state.project);
     this.loadStatsCancelablePromise.promise
     .then(data => {
       this.setStats(data.project);
@@ -66,7 +80,7 @@ export default class App extends Component {
       this.refreshTimeout = setTimeout(this.refreshStats, REFRESH_STATS_TIMEOUT);
     })
     .catch(err => {
-      this.showError('Couldn\'t refresh stats', err);
+      this.showError('Couldn\'t refresh stats', err.message, 5);
       this.refreshTimeout = setTimeout(this.refreshStats, REFRESH_STATS_TIMEOUT);
     });
   }
@@ -117,26 +131,26 @@ export default class App extends Component {
     }
   }
 
-  showError = (title, err) => {
+  showError = (title, message, autoDismiss = ERROR_NOTIFICATION_AUTO_DISMISS) => {
     this.notificationSystem.addNotification({
       level: 'error',
       title,
-      message: err.message,
-      autoDismiss: ERROR_NOTIFICATION_AUTO_DISMISS,
+      message,
+      autoDismiss,
       dismissible: true,
       position: 'br'
     });
   }
 
   render() {
-    const { projectData } = this.state;
+    const { projectData, project } = this.state;
     // To refresh graph images every hour we generate a different
     // url every hour, causing them to reload every hour
     const hour = new Date().getHours();
     return (
       <div>
         {projectData ? <ProjectInfo projectData={projectData} /> : null}
-        <Charts project={location.pathname} updateSeed={hour} />
+        {project !== '/' ? <Charts project={project} updateSeed={hour} /> : null}
         <Refreshed ref={c => this.refreshedMessage = c} />
         <NotificationSystem ref={c => this.notificationSystem = c} style={notificationStyle} />
       </div>
