@@ -9,7 +9,7 @@
     "start-dev": "jspm bundle src/index.js -wid & node server & chokidar-socket-emitter",
     "dist:clear": "rimraf dist && mkdir -p dist",
     "dist:sfx": "jspm build src/index.js dist/app.js --minify",
-    "dist:html": "html-dist index.html --minify  --remove-all --insert app.js -o dist/index.html",
+    "dist:html": "html-dist index.html --minify  --remove-all --insert /app.js -o dist/index.html",
     "dist:style": "mkdir -p dist/style && postcss --use postcss-import style/main.css -d dist/style/ && postcss --use autoprefixer dist/style/main.css -d dist/style/",
     "dist:audio": "mkdir -p dist/audio && ncp audio dist/audio",
     "dist": "npm run dist:clear && npm run dist:sfx && npm run dist:html && npm run dist:style && npm run dist:audio",

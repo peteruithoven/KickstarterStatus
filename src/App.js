@@ -4,8 +4,6 @@ import Charts from './Charts.js';
 import loadData from './data.js';
 import NotificationSystem from 'react-notification-system';
 
-// const KICKTRAC_PROJECT = 'kmi/boppad-smart-fabric-drum-pad-from-keith-mcmillen';
-const KICKTRAC_PROJECT = '1238747394/the-vamp-stereo-speaker-bring-back-the-sound';
 const REFRESH_DATA_TIMEOUT = 5000;
 const CELEBRATE_BACKER_TIMEOUT = 400;
 const NEW_BACKER_AUDIO = '/audio/newbacker.wav';
@@ -98,7 +96,7 @@ export default class App extends Component {
     this.setState({
       errorText: ''
     });
-    loadData()
+    loadData(location.pathname)
     .then(data => {
       if (!this.mounted) return;
       this.setProjectData(data);
@@ -132,7 +130,7 @@ export default class App extends Component {
     return (
       <div>
         {projectData ? <ProjectInfo projectData={projectData}/> : null}
-        <Charts project={KICKTRAC_PROJECT} updateSeed={hour} />
+        <Charts project={location.pathname} updateSeed={hour} />
         <div className="message">
           {refreshed? `Refreshed` : ``}
           {errorText? `Error: ${errorText}` : ``}

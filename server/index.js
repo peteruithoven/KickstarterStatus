@@ -1,12 +1,23 @@
 var fetch = require('node-fetch');
 var express = require('express');
+var path = require('path');
 
-// const searchTerm = process.env.SEARCH_TERM || 'boppad';
-const searchTerm = process.env.SEARCH_TERM || 'The+Vamp+Stereo';
-const url = 'https://www.kickstarter.com/projects/search.json?term='+searchTerm;
+const BASE_SEARCH_URL = 'https://www.kickstarter.com/projects/search.json?term=';
 const app = express();
 
-app.get('/data.json', function(req, res) {
+// check NODE_ENV environment variable
+console.log('env: ', app.get('env'));
+var devMode = app.get('env') === 'development';
+const rootFolder = path.join(__dirname, '..', devMode? '.' : 'dist');
+app.use(express.static(rootFolder));
+
+// Have all data routes return attempt to load Kickstarter project data
+app.get('/data/:author/:project.:ext', function(req, res) {
+  const { project, ext } = req.params;
+  if (ext !== 'json') {
+    return res.status(404).send('Only supports json format requests');
+  }
+  const url = `${BASE_SEARCH_URL}${project}`;
   fetch(url)
   .then(response => response.json())
   .then(data => {
@@ -17,11 +28,11 @@ app.get('/data.json', function(req, res) {
   });
 });
 
-// check NODE_ENV environment variable
-console.log('env: ', app.get('env'));
-var devMode = app.get('env') === 'development';
-var rootFolder = devMode? '.' : 'dist';
-app.use(express.static(rootFolder));
+// Have all other routes return regular front end
+const indexPath = path.join(rootFolder, 'index.html');
+app.get('/*', function(req, res) {
+  res.sendFile(indexPath);
+});
 
 const listener = app.listen(process.env.PORT|3000, function () {
   console.log('Server listening on ', listener.address().port);
