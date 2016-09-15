@@ -125,7 +125,6 @@ export default class App extends Component {
       refreshed: true
     });
     this.resetRefreshTimeout = setTimeout(() => {
-      if (!this.mounted) return;
       this.setState({
         refreshed: false
       });
