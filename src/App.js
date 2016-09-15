@@ -38,7 +38,6 @@ export default class App extends Component {
   componentDidMount() {
     this.loadProjectData();
     this.refreshStats();
-    this.notificationSystem = this.refs.notificationSystem;
   }
   componentWillUnmount() {
     clearTimeout(this.refreshTimeout);
@@ -63,7 +62,7 @@ export default class App extends Component {
     this.loadStatsCancelablePromise.promise
     .then(data => {
       this.setStats(data.project);
-      this.refs.refreshed.show();
+      this.refreshedMessage.show();
       this.refreshTimeout = setTimeout(this.refreshStats, REFRESH_STATS_TIMEOUT);
     })
     .catch(err => {
@@ -138,8 +137,8 @@ export default class App extends Component {
       <div>
         {projectData ? <ProjectInfo projectData={projectData} /> : null}
         <Charts project={location.pathname} updateSeed={hour} />
-        <Refreshed ref="refreshed" />
-        <NotificationSystem ref="notificationSystem" style={notificationStyle} />
+        <Refreshed ref={c => this.refreshedMessage = c} />
+        <NotificationSystem ref={c => this.notificationSystem = c} style={notificationStyle} />
       </div>
     );
   }
