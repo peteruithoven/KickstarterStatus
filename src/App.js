@@ -150,7 +150,7 @@ export default class App extends Component {
     return (
       <div>
         {projectData ? <ProjectInfo projectData={projectData} /> : null}
-        {project !== '/' ? <Charts project={project} updateSeed={hour} /> : null}
+        {projectData ? <Charts project={project} updateSeed={hour} /> : null}
         <Refreshed ref={c => this.refreshedMessage = c} />
         <NotificationSystem ref={c => this.notificationSystem = c} style={notificationStyle} />
       </div>
