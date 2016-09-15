@@ -35,16 +35,43 @@ export default class App extends Component {
   notificationSystem = null;
   newBackers = [];
   celebratingBackers = false;
-  setRefreshed = () => {
-    this.setState({
-      refreshed: true
-    });
-    this.resetRefreshTimeout = setTimeout(() => {
-      if (!this.mounted) return;
+
+  componentDidMount() {
+    this.loadProjectData();
+    this.refreshStats();
+    this.notificationSystem = this.refs.notificationSystem;
+  }
+  componentWillUnmount() {
+    clearTimeout(this.refreshTimeout);
+    clearTimeout(this.celebrateNewBackerTimeout);
+    clearTimeout(this.resetRefreshTimeout);
+    this.loadStatsCancelablePromise.cancel();
+    this.loadDataCancelablePromise.cancel();
+  }
+
+  loadProjectData = () => {
+    this.loadDataCancelablePromise = loadData(location.pathname);
+    this.loadDataCancelablePromise.promise
+    .then(data => {
       this.setState({
-        refreshed: false
+        projectData: data
       });
-    }, 1000*1);
+    })
+    .catch(err => this.showError(`Couldn't load project data`, err));
+  }
+
+  refreshStats = () => {
+    this.loadStatsCancelablePromise = loadStats(location.pathname);
+    this.loadStatsCancelablePromise.promise
+    .then(data => {
+      this.setStats(data.project);
+      this.setRefreshed();
+      this.refreshTimeout = setTimeout(this.refreshStats, REFRESH_STATS_TIMEOUT);
+    })
+    .catch(err => {
+      this.showError(`Couldn't refresh stats`, err)
+      this.refreshTimeout = setTimeout(this.refreshStats, REFRESH_STATS_TIMEOUT)
+    });
   }
 
   setStats = (data) => {
@@ -93,29 +120,18 @@ export default class App extends Component {
     }
   }
 
-  loadProjectData = () => {
-    this.loadDataCancelablePromise = loadData(location.pathname);
-    this.loadDataCancelablePromise.promise
-    .then(data => {
-      this.setState({
-        projectData: data
-      });
-    })
-    .catch(err => this.showError(`Couldn't load project data`, err));
-  }
-  refreshStats = () => {
-    this.loadStatsCancelablePromise = loadStats(location.pathname);
-    this.loadStatsCancelablePromise.promise
-    .then(data => {
-      this.setStats(data.project);
-      this.setRefreshed();
-      this.refreshTimeout = setTimeout(this.refreshStats, REFRESH_STATS_TIMEOUT);
-    })
-    .catch(err => {
-      this.showError(`Couldn't refresh stats`, err)
-      this.refreshTimeout = setTimeout(this.refreshStats, REFRESH_STATS_TIMEOUT)
+  setRefreshed = () => {
+    this.setState({
+      refreshed: true
     });
+    this.resetRefreshTimeout = setTimeout(() => {
+      if (!this.mounted) return;
+      this.setState({
+        refreshed: false
+      });
+    }, 1000*1);
   }
+
   showError = (title, err) => {
     this.notificationSystem.addNotification({
       level: 'error',
@@ -126,18 +142,7 @@ export default class App extends Component {
       position: 'br'
     });
   }
-  componentDidMount() {
-    this.loadProjectData();
-    this.refreshStats();
-    this.notificationSystem = this.refs.notificationSystem;
-  }
-  componentWillUnmount() {
-    clearTimeout(this.refreshTimeout);
-    clearTimeout(this.celebrateNewBackerTimeout);
-    clearTimeout(this.resetRefreshTimeout);
-    this.loadStatsCancelablePromise.cancel();
-    this.loadDataCancelablePromise.cancel();
-  }
+
   render () {
     const { projectData, refreshed } = this.state;
     // To refresh graph images every hour we generate a different
