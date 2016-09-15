@@ -14,7 +14,9 @@ export default function({ project, updateSeed }) {
   return (
     <div className="graphs">
       {charts.map(name => (
-        <img src={`${baseURL}/${project}/${name}.png?updateSeed=${updateSeed}`} key={name}/>
+        <a href={`${baseURL}/${project}`} target="_blank">
+          <img src={`${baseURL}/${project}/${name}.png?updateSeed=${updateSeed}`} key={name}/>
+        </a>
       ))}
     </div>
   );
