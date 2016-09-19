@@ -1,6 +1,7 @@
 @import '../style/normalize.css';
 @import '../style/graphs.css';
 @import '../style/projectInfo.css';
+@import '../style/projectStats.css';
 
 body, html {
   font-family: "Helvetica Neue", Helvetica, Arial, "Liberation Sans", FreeSans, sans-serif;

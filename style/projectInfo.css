@@ -1,22 +1,25 @@
 .project-info {
+  margin: 0 0 10px 0;
+  height: calc(2em + 3vw);
+}
+.project-info a {
+  text-decoration: none;
+}
+.project-info .image-wrapper {
+  height: 100%;
+  float: left;
+  margin: 0 10px 0 0;
+}
+.project-info img {
+  height: 100%;
+  border-radius: 12.5px;
+}
+.project-info h1 {
   font-weight: 700;
-  font-size: 60px;
+  font-size: calc(8px + 2vw);
+  color: #020621;
+  margin: 0;
 }
-.text {
-  color: #6B7180;
-}
-@media (max-width: 870px) {
-  .project-info {
-    font-size: 40px;
-  }
-}
-@media (min-width: 1200px) {
-  .project-info {
-    font-size: 80px;
-  }
-}
-@media (min-width: 1500px) {
-  .project-info {
-    font-size: 100px;
-  }
+.project-info h1:hover {
+  text-decoration: underline;
 }

@@ -1,0 +1,22 @@
+.project-stats {
+  font-weight: 700;
+  font-size: 60px;
+}
+.text {
+  color: #6B7180;
+}
+@media (max-width: 870px) {
+  .project-stats {
+    font-size: 40px;
+  }
+}
+@media (min-width: 1200px) {
+  .project-stats {
+    font-size: 80px;
+  }
+}
+@media (min-width: 1500px) {
+  .project-stats {
+    font-size: 100px;
+  }
+}
