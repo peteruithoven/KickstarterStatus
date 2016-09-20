@@ -7,6 +7,7 @@ import { loadData, loadStats } from './data.js';
 import Refreshed from './Refreshed.js';
 
 const REFRESH_STATS_TIMEOUT = 5000;
+const REFRESH_INFO_TIMEOUT = 1000 * 60 * 60; // hourly
 const CELEBRATE_BACKER_TIMEOUT = 400;
 const NEW_BACKER_AUDIO = '/audio/newbacker.wav';
 const NOTIFICATION_AUTO_DISMISS = 60;
@@ -53,6 +54,7 @@ export default class App extends Component {
   }
   componentWillUnmount() {
     clearTimeout(this.refreshTimeout);
+    clearTimeout(this.refreshProjectDataTimeout);
     clearTimeout(this.retryTimeout);
     clearTimeout(this.celebrateNewBackerTimeout);
     if (this.loadStatsCancelablePromise) {
@@ -68,8 +70,12 @@ export default class App extends Component {
     this.loadDataCancelablePromise.promise
     .then(data => {
       this.setState({
-        projectData: data
+        projectData: {
+          ...this.state.projectData,
+          ...data
+        }
       });
+      this.refreshProjectDataTimeout = setTimeout(this.loadProjectData, REFRESH_INFO_TIMEOUT);
     })
     .catch(err => {
       this.showError('Couldn\'t load project data', err.message, 5);
