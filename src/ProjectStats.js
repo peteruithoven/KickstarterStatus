@@ -7,8 +7,8 @@ import ProgressBar from './ProgressBar.js';
 moment.relativeTimeThreshold('s', 60);
 moment.relativeTimeThreshold('m', 60);
 moment.relativeTimeThreshold('h', 24);
-moment.relativeTimeThreshold('d', 31);
-moment.relativeTimeThreshold('M', 12);
+moment.relativeTimeThreshold('d', 999); // make sure we always see days
+moment.relativeTimeThreshold('M', 999);
 
 // Round relative time evaluation down
 moment.relativeTimeRounding(Math.floor);
