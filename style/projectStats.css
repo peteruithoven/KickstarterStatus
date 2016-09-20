@@ -2,6 +2,9 @@
   font-weight: 700;
   font-size: 60px;
 }
+.project-stats p {
+  margin: 0;
+}
 .text {
   color: #6B7180;
 }

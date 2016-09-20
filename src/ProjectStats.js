@@ -21,7 +21,8 @@ export default function ProjectStats({ projectData }) {
     currency_symbol: currencySymbol,
     pledged,
     goal,
-    backers_count: backersCount
+    backers_count: backersCount,
+    state
   } = projectData;
   const pledgedText = format(pledged, {
     code: currency,
@@ -42,9 +43,12 @@ export default function ProjectStats({ projectData }) {
       <span className="text">{' by '}</span>
       <span className="backers_count">{backersCount}</span>
       <span className="text">{' backers'}</span>
-      <br />
-      <span className="left">{leftText}</span>
-      <span className="text">{' left'}</span>
+      {state === 'live' ? (
+        <p>
+          <span className="left">{leftText}</span>
+          <span className="text">{' left'}</span>
+        </p>
+      ) : null}
     </div>
   );
 }
