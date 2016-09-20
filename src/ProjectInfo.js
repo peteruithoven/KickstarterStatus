@@ -7,13 +7,12 @@ export default function ProjectInfo({ projectData }) {
     photo,
     name
   } = projectData;
-  const url = urls.web.project;
-  const photoSrc = photo.med;
+  if (!urls || !photo) return null;
   return (
     <div className="project-info">
-      <a href={url} target="_blank">
+      <a href={urls.web.project} target="_blank">
         <div className="image-wrapper">
-          <img src={photoSrc} alt="project" />
+          <img src={photo.med} alt="project" />
         </div>
         <h1>{name}</h1>
       </a>
