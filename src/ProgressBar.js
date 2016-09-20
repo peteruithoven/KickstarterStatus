@@ -2,7 +2,8 @@ import React, { PropTypes } from 'react';
 
 export default function ProgressBar({
   completed = 1,
-  height = 25,
+  height = 'calc(10px + 2vw)',
+  borderRadius = 'calc(5px + 1vw)',
   color = '#0BD318',
   backgroundColor = '#d0d0d0'
 }) {
@@ -13,12 +14,12 @@ export default function ProgressBar({
   }
 
   const bgStyle = {
-    borderRadius: `${height / 2}px`,
+    borderRadius,
     backgroundColor,
     width: '100%'
   };
   const style = {
-    borderRadius: `${height / 2}px`,
+    borderRadius,
     backgroundColor: color,
     width: `${Math.round(completed * 100)}%`,
     transition: 'width 200ms',
@@ -40,7 +41,8 @@ export default function ProgressBar({
 
 ProgressBar.propTypes = {
   completed: PropTypes.number,
-  height: PropTypes.number,
+  height: PropTypes.oneOfType(PropTypes.number, PropTypes.string),
+  borderRadius: PropTypes.oneOfType(PropTypes.number, PropTypes.string),
   color: PropTypes.string,
   backgroundColor: PropTypes.string
 };
