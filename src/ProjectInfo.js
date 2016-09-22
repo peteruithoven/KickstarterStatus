@@ -7,7 +7,6 @@ export default function ProjectInfo({ projectData }) {
     photo,
     name
   } = projectData;
-  if (!urls || !photo) return null;
   return (
     <div className="project-info">
       <a href={urls.web.project} target="_blank">

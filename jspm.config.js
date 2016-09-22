@@ -87,6 +87,7 @@ SystemJS.config({
     "process": "github:jspm/nodelibs-process@0.2.0-alpha",
     "react": "npm:react@15.3.1",
     "react-dom": "npm:react-dom@15.3.1",
+    "react-loader": "npm:react-loader@2.4.0",
     "react-notification-system": "npm:react-notification-system@0.2.10",
     "stream": "github:jspm/nodelibs-stream@0.2.0-alpha",
     "string_decoder": "github:jspm/nodelibs-string_decoder@0.2.0-alpha",
@@ -212,7 +213,7 @@ SystemJS.config({
         "browserify-cipher": "npm:browserify-cipher@1.0.0",
         "create-ecdh": "npm:create-ecdh@4.0.0",
         "public-encrypt": "npm:public-encrypt@4.0.0",
-        "pbkdf2": "npm:pbkdf2@3.0.5",
+        "pbkdf2": "npm:pbkdf2@3.0.8",
         "browserify-sign": "npm:browserify-sign@4.0.0",
         "create-hmac": "npm:create-hmac@1.1.4",
         "diffie-hellman": "npm:diffie-hellman@5.0.2"
@@ -245,7 +246,7 @@ SystemJS.config({
         "create-hash": "npm:create-hash@1.1.2",
         "inherits": "npm:inherits@2.0.3",
         "browserify-rsa": "npm:browserify-rsa@4.0.1",
-        "elliptic": "npm:elliptic@6.3.1",
+        "elliptic": "npm:elliptic@6.3.2",
         "bn.js": "npm:bn.js@4.11.6",
         "create-hmac": "npm:create-hmac@1.1.4",
         "parse-asn1": "npm:parse-asn1@5.0.0"
@@ -260,7 +261,7 @@ SystemJS.config({
     },
     "npm:create-ecdh@4.0.0": {
       "map": {
-        "elliptic": "npm:elliptic@6.3.1",
+        "elliptic": "npm:elliptic@6.3.2",
         "bn.js": "npm:bn.js@4.11.6"
       }
     },
@@ -294,19 +295,6 @@ SystemJS.config({
         "evp_bytestokey": "npm:evp_bytestokey@1.0.0",
         "inherits": "npm:inherits@2.0.3",
         "buffer-xor": "npm:buffer-xor@1.0.3"
-      }
-    },
-    "npm:elliptic@6.3.1": {
-      "map": {
-        "inherits": "npm:inherits@2.0.3",
-        "bn.js": "npm:bn.js@4.11.6",
-        "hash.js": "npm:hash.js@1.0.3",
-        "brorand": "npm:brorand@1.0.6"
-      }
-    },
-    "npm:pbkdf2@3.0.5": {
-      "map": {
-        "create-hmac": "npm:create-hmac@1.1.4"
       }
     },
     "npm:des.js@1.0.0": {
@@ -344,15 +332,8 @@ SystemJS.config({
         "browserify-aes": "npm:browserify-aes@1.0.6",
         "create-hash": "npm:create-hash@1.1.2",
         "evp_bytestokey": "npm:evp_bytestokey@1.0.0",
-        "pbkdf2": "npm:pbkdf2@3.0.5",
-        "asn1.js": "npm:asn1.js@4.8.0"
-      }
-    },
-    "npm:asn1.js@4.8.0": {
-      "map": {
-        "bn.js": "npm:bn.js@4.11.6",
-        "inherits": "npm:inherits@2.0.3",
-        "minimalistic-assert": "npm:minimalistic-assert@1.0.0"
+        "pbkdf2": "npm:pbkdf2@3.0.8",
+        "asn1.js": "npm:asn1.js@4.8.1"
       }
     },
     "github:jspm/nodelibs-url@0.2.0-alpha": {
@@ -404,6 +385,31 @@ SystemJS.config({
     "npm:cipher-base@1.0.3": {
       "map": {
         "inherits": "npm:inherits@2.0.3"
+      }
+    },
+    "npm:react-loader@2.4.0": {
+      "map": {
+        "spin.js": "npm:spin.js@2.3.2"
+      }
+    },
+    "npm:pbkdf2@3.0.8": {
+      "map": {
+        "create-hmac": "npm:create-hmac@1.1.4"
+      }
+    },
+    "npm:elliptic@6.3.2": {
+      "map": {
+        "inherits": "npm:inherits@2.0.3",
+        "bn.js": "npm:bn.js@4.11.6",
+        "hash.js": "npm:hash.js@1.0.3",
+        "brorand": "npm:brorand@1.0.6"
+      }
+    },
+    "npm:asn1.js@4.8.1": {
+      "map": {
+        "bn.js": "npm:bn.js@4.11.6",
+        "inherits": "npm:inherits@2.0.3",
+        "minimalistic-assert": "npm:minimalistic-assert@1.0.0"
       }
     }
   }

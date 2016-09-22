@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import NotificationSystem from 'react-notification-system';
+import Loader from 'react-loader';
 import ProjectInfo from './ProjectInfo.js';
 import ProjectStats from './ProjectStats.js';
 import Charts from './Charts.js';
@@ -163,22 +164,13 @@ export default class App extends Component {
     // To refresh graph images every hour we generate a different
     // url every hour, causing them to reload every hour
     const hour = new Date().getHours();
-
-
-    let content;
-    if (projectData) {
-      content = (
-        <div>
+    return (
+      <div>
+        <Loader loaded={!!projectData && !!projectData.name}>
           <ProjectInfo projectData={projectData} />
           <ProjectStats projectData={projectData} />
           <Charts project={project} updateSeed={hour} />
-        </div>
-      )
-    }
-
-    return (
-      <div>
-        {content}
+        </Loader>
         <Refreshed ref={c => this.refreshedMessage = c} />
         <NotificationSystem ref={c => this.notificationSystem = c} style={notificationStyle} />
       </div>
