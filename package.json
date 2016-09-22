@@ -13,7 +13,7 @@
     "dist:style": "mkdir -p dist/style && postcss --use postcss-import style/main.css -d dist/style/ && postcss --use autoprefixer dist/style/main.css -d dist/style/",
     "dist:audio": "mkdir -p dist/audio && ncp audio dist/audio",
     "dist": "npm run dist:clear && npm run dist:sfx && npm run dist:html && npm run dist:style && npm run dist:audio",
-    "upload": "scp -r dist server package.json pi:KickstarterStatus",
+    "upload": "scp -r dist server package.json $UPLOAD_USER@$UPLOAD_HOST:$UPLOAD_PATH",
     "deploy": "npm run dist && npm run upload"
   },
   "keywords": [],
