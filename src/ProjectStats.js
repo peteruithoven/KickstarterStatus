@@ -37,7 +37,7 @@ export default function ProjectStats({ projectData }) {
   return (
     <div className="project-stats">
       <ProgressBar completed={completed} />
-      <span className="completed">{Math.round(completed * 100)}</span>
+      <span className="completed">{Math.floor(completed * 100)}</span>
       <span className="text">{`% ${currencySymbol}`}</span>
       <span className="pledged">{pledgedText}</span>
       <span className="text">{' by '}</span>
