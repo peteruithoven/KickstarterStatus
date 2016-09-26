@@ -40,13 +40,13 @@ export default function ProjectStats({ projectData }) {
       <span className="completed">{Math.floor(completed * 100)}</span>
       <span className="text">{`% ${currencySymbol}`}</span>
       <span className="pledged">{pledgedText}</span>
-      <span className="text">{' by '}</span>
+      <span className="text"> by </span>
       <span className="backers_count">{backersCount}</span>
-      <span className="text">{' backers'}</span>
+      <span className="text"> backers</span>
       {state === 'live' ? (
         <p>
           <span className="left">{leftText}</span>
-          <span className="text">{' left'}</span>
+          <span className="text"> left</span>
         </p>
       ) : null}
     </div>
