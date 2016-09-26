@@ -28,7 +28,7 @@ export default function ProjectStats({ projectData }) {
     code: currency,
     symbol: '',
     precision: 0
-  });
+  }).trim(); // for some reason currency-formatter added a space afterwards
   const completed = pledged / goal;
   const deadlineMoment = moment(deadline * 1000);
   const nowMoment = moment();
