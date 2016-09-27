@@ -41,8 +41,8 @@ export default function ProgressBar({
 
 ProgressBar.propTypes = {
   completed: PropTypes.number,
-  height: PropTypes.oneOfType(PropTypes.number, PropTypes.string),
-  borderRadius: PropTypes.oneOfType(PropTypes.number, PropTypes.string),
+  height: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  borderRadius: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   color: PropTypes.string,
   backgroundColor: PropTypes.string
 };
