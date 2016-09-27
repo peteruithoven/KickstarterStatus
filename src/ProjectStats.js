@@ -13,6 +13,17 @@ moment.relativeTimeThreshold('M', 999);
 // Round relative time evaluation down
 moment.relativeTimeRounding(Math.floor);
 
+function formatNumber(number, decimals = 0) {
+  try {
+    return number.toLocaleString(undefined, {
+      minimumFractionDigits: decimals,
+      maximumFractionDigits: decimals
+    });
+  } catch (error) {
+    return number.toFixed(decimals);
+  }
+}
+
 export default function ProjectStats({ projectData }) {
   // console.log('projectData: ', projectData);
   const {
@@ -37,11 +48,11 @@ export default function ProjectStats({ projectData }) {
   return (
     <div className="project-stats">
       <ProgressBar completed={completed} />
-      <span className="completed">{Math.floor(completed * 100)}</span>
+      <span className="completed">{formatNumber(completed * 100, 2)}</span>
       <span className="text">{`% ${currencySymbol}`}</span>
       <span className="pledged">{pledgedText}</span>
       <span className="text"> by </span>
-      <span className="backers_count">{backersCount}</span>
+      <span className="backers_count">{formatNumber(backersCount)}</span>
       <span className="text"> backers</span>
       {state === 'live' ? (
         <p>
