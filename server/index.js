@@ -19,7 +19,10 @@ app.get('/data/:author/:project.:ext', (req, res) => {
   if (ext !== 'json') {
     return res.status(404).send('Only supports json format requests');
   }
-  const url = `${BASE_SEARCH_URL}${project}`;
+  // Kickstarter's search engine always looks for whole words
+  const lastHyphenIndex = project.lastIndexOf('-');
+  const wholeWordProject = (lastHyphenIndex === -1) ? project : project.slice(0, lastHyphenIndex);
+  const url = `${BASE_SEARCH_URL}${wholeWordProject}`;
   fetch(url)
   .then(response => response.json())
   .then(data => {
