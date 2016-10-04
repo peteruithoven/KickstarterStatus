@@ -23,6 +23,9 @@ app.get('/data/:author/:project.:ext', (req, res) => {
   fetch(url)
   .then(response => response.json())
   .then(data => {
+    if (data.total_hits === 0) {
+      throw new Error(`Project not found when searching for '${wholeWordProject}'`);
+    }
     const projectData = data.projects[0];
     return res.json(projectData);
   })
