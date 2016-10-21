@@ -4,8 +4,8 @@ import { format } from 'currency-formatter';
 import ProgressBar from './ProgressBar.js';
 
 // make moment more precize
-moment.relativeTimeThreshold('s', 60);
-moment.relativeTimeThreshold('m', 60);
+moment.relativeTimeThreshold('s', 120);
+moment.relativeTimeThreshold('m', 120);
 moment.relativeTimeThreshold('h', 72); // count down in hours during last 3 days
 moment.relativeTimeThreshold('d', 999); // make sure we always see days
 moment.relativeTimeThreshold('M', 999);
